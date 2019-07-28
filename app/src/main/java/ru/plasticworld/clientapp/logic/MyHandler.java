@@ -1,12 +1,18 @@
 package ru.plasticworld.clientapp.logic;
 
 import android.os.Handler;
-import android.widget.TextView;
 
-import ru.plasticworld.clientapp.R;
+import java.util.Calendar;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
+import ru.plasticworld.clientapp.App;
 import ru.plasticworld.clientapp.activities.Values;
-
-import static ru.plasticworld.clientapp.fragments.HomeFragment.bus;
+import ru.plasticworld.clientapp.data.remote.Measurement;
+import ru.plasticworld.clientapp.data.remote.MeasurementServer;
 
 /**
  * Handler — это механизм, который позволяет работать с очередью сообщений. Он привязан к
@@ -20,9 +26,11 @@ public class MyHandler extends Handler {
     private final int ARDUINO_DATA = 1;
     private String mytext;
     private StringBuilder sb = new StringBuilder();
+    private MeasurementServer measurementServer;
 
-    public MyHandler(String mytext) {
+    public MyHandler(String mytext, MeasurementServer measurementServer) {
         this.mytext = mytext;
+        this.measurementServer = measurementServer;
     }
 
     /**
@@ -42,6 +50,23 @@ public class MyHandler extends Handler {
                     sb.delete(0, sb.length());                                  // и очищаем sb
                     mytext = "" + sbprint;                                      // обновляем TextView
                     Values.temp = sbprint;
+
+                    measurementServer.sendMessage(new Measurement(1L, Calendar.getInstance().getTime().getSeconds(), Double.parseDouble(sbprint)))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<Response<Void>>() {
+                                           @Override
+                                           public void accept(Response<Void> sendRes) throws Exception {
+                                               System.out.println("ok");
+                                           }
+                                       },
+                                    new Consumer<Throwable>() {
+                                        @Override
+                                        public void accept(Throwable e) throws Exception {
+                                            System.out.println("error");
+                                        }
+                                    });
+
                 }
                 break;
         }
