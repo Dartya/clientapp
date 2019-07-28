@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HealthApp</string>
+    <string name="title_home">Измерения</string>
+    <string name="title_dashboard">Параметры</string>
+    <string name="title_notifications">Устройства</string>
+
+    <string name="action_settings">Настройки</string>
+</resources>
