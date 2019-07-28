@@ -29,7 +29,6 @@ public class HomeFragment extends Fragment {
     private MeasurementsAdapter adapter;
     private String temp;
     private ListView listView;
-    private TextView textView;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -74,8 +73,8 @@ public class HomeFragment extends Fragment {
         }else{
             temp = Values.temp;
         }
-        dataModels.add(new MeasurementsData("Пульс, левая рука", temp, "уд/мин"));
-        dataModels.add(new MeasurementsData("Температура тела", "", "гр. С"));
+        dataModels.add(new MeasurementsData("Пульс, левая рука", "99", "уд/мин"));
+        dataModels.add(new MeasurementsData("Температура тела", temp, "гр. С"));
         adapter = new MeasurementsAdapter(dataModels, view.getContext());
         listView.setAdapter(adapter);
 

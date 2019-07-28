@@ -71,8 +71,8 @@ public class MeasurementsAdapter extends ArrayAdapter<MeasurementsData> implemen
             result=convertView;
         }
 
-        Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
-        result.startAnimation(animation);
+//        Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
+//        result.startAnimation(animation);
         lastPosition = position;
 
         viewHolder.paramName.setText(dataModel.getName());
